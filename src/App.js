@@ -1,38 +1,47 @@
-// // 受控绑定表单
-import {useState} from 'react'
-// // 1. 声明一个 react 状态
-// // 2. 核心绑定流程
-// //  2.1. 通过 value 属性绑定 react 状态
-// //  2.2. 绑定 onChange 事件 通过事件参数 e 拿到输入框最新的值，反向修改 react 状态
+// // 父传子
+// // 父组件传递数据，需要在子组件标签上绑定属性
+// // 子组件接收数据，props 的参数
+// function Son(props) {
+//   console.log(props)
+//   return (<div>This is a Son {props.name},{props.children}</div>)
+// }
 // function App() {
-//   const [value, setValue] = useState('')
-//   return(
+//   const name = 'this is app name'
+//   return (
 //     <div>
-//       <input
-//         value={value}
-//         onChange={(e)=>setValue(e.target.value)}
-//         type='text' />
+//       <Son name={name}>
+//         {/* 特殊的父传子 children */}
+//         <span>111</span>
+//       </Son>
 //     </div>
 //   )
 // }
-// export default App;
 
 
 
-// React 中获取 DOM
-import { useRef } from 'react'
-// 1. useRef 生成 ref 对象，绑定到 dom 标签上
-// 2. dom 可用时，ref.current 获取dom
-function App() {
-  const inputRef = useRef(null)
-  const showDown = () => {
-    console.dir(inputRef.current)
-  }
-  return(
+// 子传父
+import {useState} from 'react'
+function Son({onGetSonMsg}) {
+  const sonMsg = 'this is son msg'
+  return (
     <div>
-      <input type='text' ref={inputRef} />
-      <button onClick={showDown}>获取dom</button>
+      this is Son
+      <button onClick={()=>onGetSonMsg(sonMsg)}>sendMsg</button>
     </div>
   )
 }
-export default App;
+function App(){
+  const [msg, setMsg] = useState('')
+  const getMsg = (msg) => {
+    console.log(msg)
+    setMsg(msg)
+  }
+  return (
+    <div>
+      <Son onGetSonMsg={getMsg}/>
+      <span>{msg}</span>
+    </div>
+  )
+}
+
+export default App
